@@ -1,7 +1,7 @@
 -module(oacd_dummy_app).
 -behavior(application).
 
--include_lib("oacd_core/include/log.hrl").
+% -include_lib("oacd_core/include/log.hrl").
 
 -export([start/2, prep_stop/1, stop/1]).
 
