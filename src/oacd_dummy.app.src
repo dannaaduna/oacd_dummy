@@ -5,6 +5,6 @@
               {registered,[dummy_media_manager]},
               {mod,{oacd_dummy_app,[]}},
               {env,[]},
-              {applications,[kernel,stdlib,'OpenACD']},
+              {applications,[kernel,stdlib]},
               {start_phases,[]},
               {included_applications,[]}]}.
