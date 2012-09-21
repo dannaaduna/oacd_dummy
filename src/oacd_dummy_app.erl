@@ -10,7 +10,7 @@
 %% ==================================================
 
 start(_Type, Args) ->
-	?INFO("Starting dummy plugin:  ~p", [Args]),
+	% ?INFO("Starting dummy plugin:  ~p", [Args]),
 	Args0 = merge_env(Args),
 	oacd_dummy_sup:start_link(Args0).
 
