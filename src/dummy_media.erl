@@ -719,12 +719,12 @@ dummy_test_() ->
 		ok
 	end,
 	[
-		{
-			"Simple start",
-			fun() -> 
-				?assertMatch({ok, _Pid}, dummy_media:start([{queues, none}]))
-			end
-		},
+		% {
+		% 	"Simple start",
+		% 	fun() -> 
+		% 		?assertMatch({ok, _Pid}, dummy_media:start([{queues, none}]))
+		% 	end
+		% },
 		{
 			"Set agent ringing when set to success",
 			fun() -> 
@@ -732,24 +732,24 @@ dummy_test_() ->
 				?assertEqual({ok, [{"caseid", undefined}], State}, handle_ring("apid", "ringdata", "callrec", State))
 			end
 		},
-		{
-			"Set agent ringing when set to failure",
-			fun() -> 
-				{ok, Agentpid} = agent:start(#agent{login="testagent"}),
-				agent:set_state(Agentpid, idle),
-				{ok, Dummypid} = dummy_media:start([{id, "testcall"}, {queues, none}], failure),
-				% TODO a real test would hit the handle_ring function directly.
-				?assertMatch(deferred, gen_media:ring(Dummypid, {"testagent", Agentpid}, #queued_call{media=Dummypid, id = "testcall"}, 4000))
-			end
-		},
-		{
-			"Get call when set to success",
-			fun() -> 
-				{ok, Dummypid} = dummy_media:start([{id, "testcall"}, {queues, none}]),
-				Call = gen_media:get_call(Dummypid),
-				?assertMatch("testcall", Call#call.id)
-			end
-		},
+		% {
+		% 	"Set agent ringing when set to failure",
+		% 	fun() -> 
+		% 		{ok, Agentpid} = agent:start(#agent{login="testagent"}),
+		% 		agent:set_state(Agentpid, idle),
+		% 		{ok, Dummypid} = dummy_media:start([{id, "testcall"}, {queues, none}], failure),
+		% 		% TODO a real test would hit the handle_ring function directly.
+		% 		?assertMatch(deferred, gen_media:ring(Dummypid, {"testagent", Agentpid}, #queued_call{media=Dummypid, id = "testcall"}, 4000))
+		% 	end
+		% },
+		% {
+		% 	"Get call when set to success",
+		% 	fun() -> 
+		% 		{ok, Dummypid} = dummy_media:start([{id, "testcall"}, {queues, none}]),
+		% 		Call = gen_media:get_call(Dummypid),
+		% 		?assertMatch("testcall", Call#call.id)
+		% 	end
+		% },
 %		{
 %			"Get call when set to failure",
 %			fun() -> 
@@ -787,20 +787,20 @@ dummy_test_() ->
 				?assertMatch({invalid, State}, handle_voicemail("doesn't matter", "doesn't matter", "doesn't matter", State))
 			end
 		},
-		{
-			"Announce when set for success",
-			fun() ->
-				{ok, Dummypid} = dummy_media:start([{id, "testcall"}, {queues, none}]),
-				?assertMatch(ok, gen_media:announce(Dummypid, "Random data"))
-			end
-		},
-		{
-			"Announce when set to fail",
-			fun() ->
-				{ok, Dummypid} = dummy_media:start([{id, "testcall"}, {queues, none}], failure),
-				?assertMatch(ok, gen_media:announce(Dummypid, "Random data"))
-			end
-		},
+		% {
+		% 	"Announce when set for success",
+		% 	fun() ->
+		% 		{ok, Dummypid} = dummy_media:start([{id, "testcall"}, {queues, none}]),
+		% 		?assertMatch(ok, gen_media:announce(Dummypid, "Random data"))
+		% 	end
+		% },
+		% {
+		% 	"Announce when set to fail",
+		% 	fun() ->
+		% 		{ok, Dummypid} = dummy_media:start([{id, "testcall"}, {queues, none}], failure),
+		% 		?assertMatch(ok, gen_media:announce(Dummypid, "Random data"))
+		% 	end
+		% },
 		{
 			"Set to die",
 			fun() ->
