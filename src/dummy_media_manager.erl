@@ -133,7 +133,7 @@ spawn_call(Options) ->
 	dummy_media_manager ! {spawn_call, Options},
 	ok.
 
-agent_web_path([$/,$d,$u,$m,$m,$y,$/ | Path], Post, _, PrivDir) ->
+agent_web_path([$/,$d,$u,$m,$m,$y,$/ | Path], _Post, _, PrivDir) ->
 	File = filename:join([PrivDir, "www", Path]),
 	case filelib:is_file(File) of
 		false ->
@@ -146,7 +146,7 @@ agent_web_path(Path, _, _, _) ->
 	?DEBUG("Got gonna do anything for ~p", [Path]),
 	{error, not_found}.
 
-agent_web_call(Agentrec, Conn, <<"get_happy">>, [], Priv) ->
+agent_web_call(_Agentrec, _Conn, <<"get_happy">>, [], Priv) ->
 	File = filename:join([Priv, "www", "dummy_media.html"]),
 	{ok, Bin} = file:read_file(File),
 	{ok, {ok, Bin}}.

@@ -59,6 +59,7 @@
 	start_ring/4,
 	ring_agent/2,
 	precall_agent/1,
+	precall_agent/2,
 	stop/1,
 	stop/2,
 	set_mode/3,
@@ -92,7 +93,8 @@
 	handle_warm_transfer_begin/3,
 	handle_warm_transfer_cancel/2,
 	handle_warm_transfer_complete/2,
-	handle_end_call/2
+	handle_end_call/2,
+	handle_queue_transfer/5
 ]).
 
 -record(state, {
@@ -104,7 +106,7 @@
 	caseid :: string() | 'undefined'
 	}).
 
--type(state() :: #state{}).
+% -type(state() :: #state{}).
 %-define(GEN_MEDIA, true).
 %-include("gen_spec.hrl").
 
@@ -351,7 +353,7 @@ init([Props, Fails]) ->
 %% Function: %% handle_call(Request, From, State) -> {reply, Reply, State} |
 %%--------------------------------------------------------------------
 
-handle_call(Msg, From, Statename, Call, GmState, State) ->
+handle_call(Msg, From, _Statename, Call, _GmState, State) ->
 	handle_call(Msg, From, Call, State).
 
 handle_call(set_success, _From, _Callrec, #state{fail = Fail} = State) -> 
@@ -494,7 +496,7 @@ handle_info(Info, _StateNaem, _Callrec, _Internal, State) ->
 %% cleaning up. When it returns, the gen_server terminates with Reason.
 %% The return value is ignored.
 %%--------------------------------------------------------------------
-terminate(_Reason, Statename, _Callrec, _Internal, _State) ->
+terminate(_Reason, _Statename, _Callrec, _Internal, _State) ->
 	ok.
 
 %%--------------------------------------------------------------------
@@ -590,6 +592,9 @@ handle_queue_transfer(_Callrec, State) ->
 handle_ring_stop(_StateName, _Callrec, _Internal, State) ->
 	{ok, State}.
 
+handle_queue_transfer(_, _, _, _, State) ->
+	{ok, State}.
+
 handle_wrapup(_From, _StateName, _Callrec, _Internal, State) ->
 	{hangup, State}.
 
@@ -647,7 +652,7 @@ handle_spy({Spy, _AgentRec}, _Callrec, #state{fail = Fail} = State) ->
 %%% Internal functions
 %%--------------------------------------------------------------------
 
-start_ring_loop(Agent, Chan, undefined, persistant) ->
+start_ring_loop(Agent, _Chan, undefined, persistant) ->
 	persistant_ring_loop(Agent, undefined);
 start_ring_loop(Agent, Chan, Call, transient) ->
 	process_flag(trap_exit, true),
@@ -675,7 +680,7 @@ persistant_ring_loop(Agent, #call{source = Src} = Call) ->
 		ringout ->
 			gen_media:stop_ringing(Call#call.source),
 			persistant_ring_loop(Agent, undefined);
-		{'EXIT', Src, Cause} ->
+		{'EXIT', Src, _Cause} ->
 			persistant_ring_loop(Agent, undefined)
 	end.
 
